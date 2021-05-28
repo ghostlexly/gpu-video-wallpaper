@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# author: Tolga MALKOC | ghostlexly@gmail.com
+
+# get arguments
+print_help() {
+    echo "Usage: gpu-video-wallpaper video_path.mp4"
+    echo ""
+}
+
+if [ $# = 0 ]
+    then print_help
+        exit 1
+fi
+
+while true
+    do if [ $# -gt 0 ]
+        then case $1 in
+            --*)
+                print_help
+                exit 1
+            ;;
+            *)
+                break
+            ;;
+        esac
+    else
+        echo "No video path given!"
+        exit 2
+    fi
+done
+
+sudo apt install mpv pcregrep
+
+VIDEO_PATH="$1"
+SCREENS=`xrandr | grep " connected\|\*" | pcregrep -o1 '([0-9]{1,}[x]{1,1}[0-9+]{1,}) \('`
+
+for item in $SCREENS
+do
+    ./xwinwrap -g $item -fdt -ni -b -nf -un -o 1.0 -- mpv -wid WID --loop --no-audio $VIDEO_PATH & disown
+done

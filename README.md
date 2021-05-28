@@ -1,1 +1,0 @@
-gpu-video-wallpaper
