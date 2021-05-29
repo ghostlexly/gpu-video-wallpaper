@@ -1,6 +1,24 @@
 #!/usr/bin/env bash
 # author: Tolga MALKOC | ghostlexly@gmail.com
 
+scriptdir=$(dirname $0)
+
+# check dependencies
+check_dependencies() {
+	if [ ! "$(which mpv)" ] || [ ! "$(which pcregrep)" ] ; then
+		echo "Missing dependencies. Do you wish to install them? [y/n]"
+		read input
+		if [ "$input" == "y" ] ; then
+			sudo apt install mpv pcregrep
+		else
+			echo "Dependencies unfulfilled, aborting."
+			exit 1
+		fi
+	fi
+}
+check_dependencies
+
+
 # get arguments
 print_help() {
     echo "Usage: gpu-video-wallpaper video_path.mp4"
@@ -29,12 +47,10 @@ while true
     fi
 done
 
-sudo apt install mpv pcregrep
-
 VIDEO_PATH="$1"
 SCREENS=`xrandr | grep " connected\|\*" | pcregrep -o1 '([0-9]{1,}[x]{1,1}[0-9+]{1,}) \('`
 
 for item in $SCREENS
 do
-    ./xwinwrap -g $item -fdt -ni -b -nf -un -o 1.0 -- mpv -wid WID --loop --no-audio $VIDEO_PATH & disown
+    $scriptdir/xwinwrap -g $item -fdt -ni -b -nf -un -o 1.0 -- mpv -wid WID --loop --no-audio $VIDEO_PATH & disown
 done
