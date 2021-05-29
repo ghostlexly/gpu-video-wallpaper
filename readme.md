@@ -13,6 +13,8 @@ Usage: ./gpu-video-wallpaper [--stop] [--startup] "video_path.mp4"
 ## dependencies
 
 - xrandr
+- pcregrep
+- mpv
 
 ## contributors
 - SwallowYourDreams
