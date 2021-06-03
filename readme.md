@@ -5,13 +5,13 @@ Run a video as animated wallpaper on your Ubuntu/Debian-based desktop with dual/
 You can either run the application through its GUI or via the command line.
 
 ````
-CLI usage: gpu-video-wallpaper.sh [--start] [--stop] [--startup] "video_path.mp4"
+CLI usage: gpu-video-wallpaper.sh [--start] [--stop] [--startup true|false] "video_path.mp4"
 
 --start Start playback of video wallpaper. 
 
---stop  Stop playback.
+--stop  Stop active playback.
 
---startup  Start video wallpaper on system startup.
+--startup  Start/disable playback of video file on system startup."
 ````
 
 ## Installation
