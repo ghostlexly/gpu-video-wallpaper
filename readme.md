@@ -39,8 +39,3 @@ Known errors:
 - pcregrep
 - mpv
 - xwinwrap
-
------
-
-## contributors
-- SwallowYourDreams
