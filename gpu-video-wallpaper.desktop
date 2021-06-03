@@ -1,0 +1,8 @@
+[Desktop entry]
+Icon=wallpaper
+Name=Video Wallpaper
+Comment=Set video files as your desktop wallpaper.
+Terminal=false
+Exec=gpu-video-wallpaper.py
+Type=Application
+Categories=Utility
