@@ -16,6 +16,23 @@ CLI usage: gpu-video-wallpaper.sh [--start] [--stop] [--startup] "video_path.mp4
 
 -----
 
+## Installation
+
+To install, simply run `ìnstaller.sh`, which will set up all dependencies, install the necessary files to your system and optionally create a start menu entry.
+
+-----
+
+## Dependencies
+
+All dependencies will be 
+
+- xrandr
+- pcregrep
+- mpv
+- xwinwrap
+
+-----
+
 ## changelog
 
 **2021/06/03:**
@@ -30,12 +47,3 @@ CLI usage: gpu-video-wallpaper.sh [--start] [--stop] [--startup] "video_path.mp4
 Known errors:
 
 * When sourcing 'settings.conf', 'gpu-video-wallpaper.sh' will throw an error because it stumbles over the "\[gpu-video-wallpaper settings\]" section. This section, however, is needed by the python script. Since the shell script does not crash, this error message is tolerated for the moment until I get around to find a more elegant way than just sourcing it 'settings.conf'.
-
------
-
-## dependencies
-
-- xrandr
-- pcregrep
-- mpv
-- xwinwrap
