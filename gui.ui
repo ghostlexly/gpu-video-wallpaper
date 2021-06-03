@@ -55,9 +55,9 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="button_autostart">
+       <widget class="QCheckBox" name="checkbox_autostart">
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets video wallpaper to automatically start on boot.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Automatically start playback of video wallpaper on system startup.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Autostart</string>

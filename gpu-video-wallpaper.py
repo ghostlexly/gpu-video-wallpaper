@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import sys
 import os
+import getpass
 import configparser
 from PyQt5 import QtWidgets, QtGui, uic
 from PyQt5.QtWidgets import QFileDialog
@@ -16,6 +17,7 @@ class MainWindow(QtWidgets.QMainWindow):
 		self.dependencies = ["mpv", "pcregrep", "xrandr"]
 		self.missingDependencies = self.checkDependencies()
 		self.name = "gpu-video-wallpaper"
+		self.autostartFile = "/home/" + getpass.getuser() + "/.config/autostart/" + self.name + ".desktop"
 		# Load external .ui file
 		uic.loadUi( self.scriptDir + "gui.ui", self)
 		self.show()
@@ -31,12 +33,17 @@ class MainWindow(QtWidgets.QMainWindow):
 		self.button_browse.clicked.connect(self.selectFile)
 		self.button_start.clicked.connect(self.start)
 		self.button_stop.clicked.connect(self.stop)
-		self.button_autostart.clicked.connect(self.autostart)
+		self.checkbox_autostart.setChecked(self.getAutostart())
+		self.checkbox_autostart.toggled.connect(self.autostart, not self.checkbox_autostart.isChecked())
 		#Startup
 		if len(self.missingDependencies) > 0:
 			self.statusbar.showMessage("Error: missing dependencies: " + str(self.missingDependencies) + ". Please run the installer again.")
+			print("Missing dependencies: " + str(self.missingDependencies))
 			self.button_start.setEnabled(False)
 			self.button_stop.setEnabled(False)
+			self.checkbox_autostart.setEnabled(False)
+		else:
+			print("All dependencies fulfilled.")
 
 	def selectFile(self, event):
 		dialogue = QFileDialog(self)
@@ -47,22 +54,33 @@ class MainWindow(QtWidgets.QMainWindow):
 		if len(file[0]) > 0:
 			self.directory.setText(file[0])
 	
-	def start(self, event):
+	def start(self):
 		if(self.fileSelected()):
 			exitcode = os.system(self.shellScript + ' --start "' + self.directory.text() + '"')
 			if exitcode > 0:
 				self.statusbar.showMessage("Error: could not start playback.")
 			else:
-				self.statusbar.showMessage("Playback started.")
+				self.statusbar.showMessage("Playback is running.")
 
-	def stop(self, event):
+	def stop(self):
 		os.system(self.shellScript + " --stop")
 		self.statusbar.showMessage("Playback stopped.")
 	
-	def autostart(self,event):
+	def autostart(self, enable):
 		if self.fileSelected():
-			os.system(self.shellScript + " --startup " + self.directory.text())
-			self.statusbar.showMessage("Set video wallpaper as autostart.") 
+			if(enable):
+				self.statusbar.showMessage("Wallpaper autostart enabled.") 
+			else:
+				self.statusbar.showMessage("Wallpaper autostart disabled.")
+			os.system(self.shellScript + " --startup " + str(enable).lower() + " " + self.directory.text())
+			
+	def getAutostart(self):
+		if os.path.isfile(self.autostartFile):
+			cat = str(os.popen("cat " + self.autostartFile + "| grep -Po 'X-GNOME-Autostart-enabled=\K.*'").read()).strip()
+			cat = True if cat == "true" else False
+			return cat
+		else:
+			return False
 	
 	def fileSelected(self):
 		path = self.directory.text()
@@ -74,10 +92,14 @@ class MainWindow(QtWidgets.QMainWindow):
 	
 	def checkDependencies(self):
 		missingDependencies = []
+		print("Checking for missing dependencies:")
 		for d in self.dependencies:
 			missing = os.system("which " + d)
 			if missing:
 				missingDependencies.append(d)
+		print ("./xwinwrap")
+		if not os.path.isfile(self.scriptDir + "/xwinwrap"):
+			missingDependencies.append("xwinwrap")
 		return missingDependencies
 
 # Main method

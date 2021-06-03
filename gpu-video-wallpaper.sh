@@ -6,7 +6,7 @@ name="gpu-video-wallpaper"
 scriptdir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 conf="$scriptdir/settings.conf"
 if [ -f "$conf" ] ; then
-	source "$conf" # To do: Find a more elegant way of reading variables from the config file. The shell will throw an error because it stumbles over the [gpu-video-wallpaper settings] section. For now, this is tolerable.
+	source "$conf" &> /dev/null # To do: Find a more elegant way of reading variables from the config file. The shell will throw an error because it stumbles over the [gpu-video-wallpaper settings] section. For now, this is tolerable; the error message will be sent to /dev/null.
 else
 	echo 'pid=""' > "$conf"
 fi
@@ -23,7 +23,6 @@ update_config() {
 	if [ ${#2} -gt 0 ] ; then
 		lastfile="$2"
 	fi
-	echo $pid
 	echo "pid=$pid" >> "$conf"
 	echo "lastfile=$lastfile" >> "$conf"
 }
@@ -53,19 +52,33 @@ stop() {
 	update_config
 }
 
+# Start / disable playback of video file on system startup.
+# Parameters: $1 = true|false
 startup() {
-	echo "Adding $name to system startup."
+	startup=""
+	if [ "$2" == "true" ] || [ "$2" == "" ] ; then
+		echo "Adding $name to system startup."
+		startup="true"
+	elif [ "$2" == "false" ] ; then
+		echo "Disabling startup."
+		startup="false"
+	else
+		echo "Illegal startup parameter."
+		exit 1
+	fi
 	LAUNCH_SCRIPT="bash -c '\"$scriptdir/gpu-video-wallpaper.sh\" --start  \"${@:2}\"'"
-	printf "[Desktop Entry]\nType=Application\nExec=$LAUNCH_SCRIPT\nHidden=false\nNoDisplay=false\nX-GNOME-Autostart-enabled=true\nName=$name" > ~/.config/autostart/gpu-video-wallpaper.desktop
+	printf "[Desktop Entry]\nType=Application\nExec=$LAUNCH_SCRIPT\nHidden=false\nNoDisplay=false\nX-GNOME-Autostart-enabled=$startup\nName=$name" > "/home/$USER/.config/autostart/$name.desktop"
 }
 
 # get arguments
 print_help() {
-    echo "Usage: ./gpu-video-wallpaper.sh [--stop] [--startup] \"video_path.mp4\""
+    echo "Usage: ./gpu-video-wallpaper.sh [--start] [--stop] [--startup true|false] \"video_path.mp4\""
     echo ""
-    echo "--stop  Kill all gpu-video-wallpaper.sh processes."
+    echo "--start Start playback of video file."
     echo ""
-    echo "--startup  Start gpu-video-wallpaper.sh on Ubuntu startup."
+    echo "--stop Stop active playback."
+    echo ""
+    echo "--startup Start/disable playback of video file on system startup."
     echo ""
 }
 
