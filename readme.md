@@ -1,13 +1,15 @@
 # gpu-video-wallpaper
 
-Run a video as a animated wallpaper on your ubuntu/debian desktop with dual/multiple monitor support.
+Run a video as a animated wallpaper on your Ubuntu/Debian-based desktop with dual/multiple monitor support.
 
 ````
-Usage: ./gpu-video-wallpaper [--stop] [--startup] "video_path.mp4"
+Usage: ./gpu-video-wallpaper [--start] [--stop] [--startup] "video_path.mp4"
 
---stop  Kill all gpu-video-wallpaper processes.
+--start Start playback of video wallpaper. 
 
---startup  Start gpu-video-wallpaper on Ubuntu startup.
+--stop  Stop playback.
+
+--startup  Start video wallpaper on system startup.
 ````
 
 ## dependencies
@@ -15,6 +17,7 @@ Usage: ./gpu-video-wallpaper [--stop] [--startup] "video_path.mp4"
 - xrandr
 - pcregrep
 - mpv
+- xwinwrap
 
 ## contributors
 - SwallowYourDreams
