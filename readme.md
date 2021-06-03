@@ -14,13 +14,9 @@ CLI usage: gpu-video-wallpaper.sh [--start] [--stop] [--startup] "video_path.mp4
 --startup  Start video wallpaper on system startup.
 ````
 
------
-
 ## Installation
 
 To install, simply run `ìnstaller.sh`, which will set up all dependencies, install the necessary files to your system and optionally create a start menu entry.
-
------
 
 ## Dependencies
 
@@ -30,8 +26,6 @@ All dependencies will be
 - pcregrep
 - mpv
 - xwinwrap
-
------
 
 ## Changelog
 
