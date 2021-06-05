@@ -10,28 +10,30 @@ files=("$name.sh" "$name.py" "gui.ui")
 
 check_dependencies() {
 	# Downloading xwinwrap
-	echo "$name depends on xwinwrap to run. Do you wish to download it? [y/n]"
-	read input
-	if [ "$input" == "y" ] ; then 
-		wget "$xwinwrap_dl" -O "$installdir/xwinwrap"
-		chmod +x "$installdir/xwinwrap"
-	else
-		echo "Dependencies unfulfilled, aborting."
-		exit 1
+	if [ ! -f "$installdir/xwinwrap" ] ; then
+		echo "$name depends on xwinwrap to run. Do you wish to download it? [y/n]"
+		read input
+		if [ "$input" == "y" ] ; then 
+			wget "$xwinwrap_dl" -O "$installdir/xwinwrap"
+			chmod +x "$installdir/xwinwrap"
+		else
+			echo "Dependencies unfulfilled, aborting."
+			exit 1
+		fi
 	fi
 	
 	# Check for dependencies in repositories
 	for d in ${dependencies[@]} ; do
 		present=$(which "$d")
 		if [ ${#present} -eq 0 ] ; then
-			missingDependencies+=" $d"
+			missingDependencies+="$d "
 		fi 
 	done
 	if [ "${#missingDependencies}" -gt 0 ] ; then
 		echo "Missing dependencies:$missingDependencies. Do you wish to install them? [y/n]"
 		read input
 		if [ "$input" == "y" ] ; then
-			sudo apt install "$missingDependencies"
+			sudo apt install $missingDependencies
 		else
 			echo "Dependencies unfulfilled, aborting."
 			exit 1
