@@ -3,7 +3,7 @@
 name="gpu-video-wallpaper"
 installdir="/home/$USER/.local/bin"
 xwinwrap_dl="https://github.com/mmhobi7/xwinwrap/releases/download/v0.9/xwinwrap"
-dependencies=("mpv" "pcregrep" "xrandr")
+dependencies=("mpv" "pcregrep" "xrandr" "python3-pyqt5")
 missingDependencies=""
 #installdir="/usr/local/share/$name"
 files=("$name.sh" "$name.py" "gui.ui")
