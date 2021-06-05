@@ -1,12 +1,12 @@
 #!/bin/bash
 # Written by: SwallowYourDreams
-name="gpu-video-wallpaper"
+name="video-wallpaper"
 installdir="/home/$USER/.local/bin"
 xwinwrap_dl="https://github.com/mmhobi7/xwinwrap/releases/download/v0.9/xwinwrap"
 dependencies=("mpv" "pcregrep" "xrandr" "python3-pyqt5")
 missingDependencies=""
 #installdir="/usr/local/share/$name"
-files=("$name.sh" "$name.py" "gui.ui")
+files=("$name.sh" "$name.py" "gui.ui" "xwinwrap")
 
 check_dependencies() {
 	# Downloading xwinwrap
@@ -26,7 +26,7 @@ check_dependencies() {
 	for d in ${dependencies[@]} ; do
 		present=$(which "$d")
 		if [ ${#present} -eq 0 ] ; then
-			missingDependencies+="$d "
+			missingDependencies+=" $d"
 		fi 
 	done
 	if [ "${#missingDependencies}" -gt 0 ] ; then
@@ -46,16 +46,36 @@ check_dependencies() {
 install() {
 	sudo mkdir -p $installdir
 	for file in ${files[@]} ; do
-		sudo cp "./$file" $installdir
+		if [ "$file" != "xwinwrap" ] ; then
+			cp "./$file" $installdir
+		fi
 	done
-	echo "Do you wish to create a start menu entry? [y/n]"
-	read input
-	if [ "$input" == "y" ] ; then
-		sudo cp "./$name.desktop" /usr/share/applications
+	if [ ! -f "/.local/share/applications/$name.desktop" ] ; then
+		echo "Do you wish to create a start menu entry? [y/n]"
+		read input
+		if [ "$input" == "y" ] ; then
+			desktopFile=~/.local/share/applications/"$name".desktop
+			#sudo cp "./$name.desktop" ~/.local/share/applications
+			desktopEntry="[Desktop Entry]\nType=Application\nName=Video Wallpaper\nExec=$name.py\nIcon=wallpaper\nComment=Set video files as your desktop wallpaper.\nCategories=Utility\nTerminal=false\n"
+			sudo printf "$desktopEntry" > "$desktopFile"
+		fi
 	fi
 }
 
+uninstall() {
+	# Remove program files
+	for file in ${files[@]} ; do
+		rm "$installdir/$file"
+	done
+	rm ~/.local/share/applications/"$name".desktop # Menu entry
+}
 
-echo "This script will install $name to your machine." 
-check_dependencies
-install
+if [ "$1" == "" ] ; then
+	echo "This script will install $name to your machine." 
+	check_dependencies
+	install
+elif [ "$1" == "--uninstall" ] ; then
+	uninstall
+else
+	echo "Illegal parameter."
+fi
