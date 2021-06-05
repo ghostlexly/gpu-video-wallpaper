@@ -1,4 +1,5 @@
 #!/usr/bin/env xdg-open
+
 [Desktop Entry]
 Type=Application
 Name=Video Wallpaper
@@ -7,4 +8,4 @@ Icon=wallpaper
 Comment=Set video files as your desktop wallpaper.
 Categories=Utility
 Terminal=false
-Name[de_DE]=gpu-video-wallpaper.desktop
+Name[de_DE]=gpu-video-wallpaper
