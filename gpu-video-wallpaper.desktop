@@ -1,8 +1,10 @@
-[Desktop entry]
-Icon=wallpaper
-Name=Video Wallpaper
-Comment=Set video files as your desktop wallpaper.
-Terminal=false
-Exec=gpu-video-wallpaper.py
+#!/usr/bin/env xdg-open
+[Desktop Entry]
 Type=Application
+Name=Video Wallpaper
+Exec=gpu-video-wallpaper.py
+Icon=wallpaper
+Comment=Set video files as your desktop wallpaper.
 Categories=Utility
+Terminal=false
+Name[de_DE]=gpu-video-wallpaper.desktop
