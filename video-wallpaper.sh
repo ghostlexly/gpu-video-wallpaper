@@ -56,17 +56,18 @@ stop() {
 # Parameters: $1 = true|false
 startup() {
 	startup=""
-	if [ "$2" == "true" ] || [ "$2" == "" ] ; then
+	if [ "$2" == "true" ] ; then
 		echo "Adding $name to system startup."
 		startup="true"
 	elif [ "$2" == "false" ] ; then
 		echo "Disabling startup."
 		startup="false"
+		$3="$lastfile"
 	else
 		echo "Illegal startup parameter."
 		exit 1
 	fi
-	LAUNCH_SCRIPT="bash -c '\"$scriptdir/$name.sh\" --start  \"${@:2}\"'"
+	LAUNCH_SCRIPT="bash -c '\"$scriptdir/$name.sh\" --start \"$3\"'"
 	printf "[Desktop Entry]\nType=Application\nExec=$LAUNCH_SCRIPT\nHidden=false\nNoDisplay=false\nX-GNOME-Autostart-enabled=$startup\nName=$name" > "/home/$USER/.config/autostart/$name.desktop"
 }
 
