@@ -47,7 +47,7 @@ install() {
 	sudo mkdir -p $installdir
 	for file in ${files[@]} ; do
 		if [ "$file" != "xwinwrap" ] ; then
-			cp "./$file" $installdir
+			sudo cp "./$file" $installdir
 		fi
 	done
 	if [ ! -f "/.local/share/applications/$name.desktop" ] ; then
