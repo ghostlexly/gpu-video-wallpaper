@@ -34,6 +34,10 @@ Run `install.sh --uninstall` to remove all files associated with video-wallpaper
 
 ## Changelog
 
+**2021/08/17**
+
+* Bugfixes to installer and autostart functionality
+
 **2021/06/05**
 
 * Changed name to "video-wallpaper"
