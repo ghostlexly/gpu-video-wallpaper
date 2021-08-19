@@ -2,14 +2,21 @@
 # author: Tolga MALKOC | ghostlexly@gmail.com
 # contributor: SwallowYourDreams | https://github.com/SwallowYourDreams
 
+# Global variables
 name="video-wallpaper"
 scriptdir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 conf="$scriptdir/settings.conf"
-if [ -f "$conf" ] ; then
-	source "$conf" &> /dev/null # To do: Find a more elegant way of reading variables from the config file. The shell will throw an error because it stumbles over the [video-wallpaper settings] section. For now, this is tolerable; the error message will be sent to /dev/null.
-else
-	echo 'pid=""' > "$conf"
-fi
+
+# Read config
+read_config() {
+	if [ -f "$conf" ] ; then
+		source "$conf" &> /dev/null # To do: Find a more elegant way of reading variables from the config file. The shell will throw an error because it stumbles over the [video-wallpaper settings] section. For now, this is tolerable; the error message will be sent to /dev/null.
+	else
+		echo 'pid=""' > "$conf"
+		echo 'lastfile=""' >> "$conf"
+	fi
+}
+read_config
 
 # Write to config file
 # Parameters: $1: pid | $2: Video file
@@ -39,7 +46,7 @@ start() {
 	do
 		"$scriptdir"/xwinwrap -g $item -fdt -ni -b -nf -un -o 1.0 -- mpv -wid WID --loop --no-audio "$VIDEO_PATH" & disown
 	done
-	update_config $! "$VIDEO_PATH"
+	update_config $! "\"$VIDEO_PATH\""
 }
 
 stop() {
@@ -49,26 +56,36 @@ stop() {
 	else
 		echo "No active video wallpaper found."
 	fi
-	update_config
+	update_config "" "\"$lastfile\""
 }
 
 # Start / disable playback of video file on system startup.
-# Parameters: $1 = true|false
+# Parameters: $2 = true|false $3 = videofile
 startup() {
 	startup=""
 	if [ "$2" == "true" ] ; then
-		echo "Adding $name to system startup."
+		echo "Enabling startup of video wallpaper."
 		startup="true"
+		videofile="$3"
 	elif [ "$2" == "false" ] ; then
-		echo "Disabling startup."
+		echo "Disabling startup of video wallpaper."
 		startup="false"
-		$3="$lastfile"
+		videofile="$lastfile"
 	else
 		echo "Illegal startup parameter."
 		exit 1
 	fi
-	LAUNCH_SCRIPT="bash -c '\"$scriptdir/$name.sh\" --start \"$3\"'"
+	LAUNCH_SCRIPT="bash -c '\"$scriptdir/$name.sh\" --start \"$videofile\"'"
 	printf "[Desktop Entry]\nType=Application\nExec=$LAUNCH_SCRIPT\nHidden=false\nNoDisplay=false\nX-GNOME-Autostart-enabled=$startup\nName=$name" > "/home/$USER/.config/autostart/$name.desktop"
+}
+
+# Checks if a (video) file exists. Displays and error and stops the script if it doesn't
+# $1 = the file to be checked
+file_exists() {
+	if [ ! -f "$1" ] ; then
+		echo "Error. File does not exist: $1"
+		exit 1
+	fi
 }
 
 # get arguments
@@ -94,12 +111,19 @@ while true
     do if [ $# -gt 0 ]
         then case $1 in
             --startup*)
+				file_exists "$3"
                 startup "${@}"
                 exit 0
             ;;
             
 			--start*)
-				start "$2"
+				if [ ${#2} -gt 0 ]; then
+					file_exists "$2"
+					start "$2"
+				else
+					print_help
+					exit 1
+				fi
 				exit 0
 			;;
 			
