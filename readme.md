@@ -22,6 +22,7 @@ To install, simply run `ìnstall.sh`, which will set up all dependencies, instal
 
 All dependencies will be installed when running `install.sh`.
 
+- python3
 - python3-pyqt5
 - xrandr
 - pcregrep
