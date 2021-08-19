@@ -60,4 +60,4 @@ Run `install.sh --uninstall` to remove all files associated with video-wallpaper
 
 Known errors:
 
-* When sourcing `settings.conf`, `video-wallpaper.sh` will throw an error because it stumbles over the "\[video-wallpaper settings\]" section. This section, however, is needed by the python script. Since the shell script does not crash, this error message is tolerated for the moment until I get around to find a more elegant way than just sourcing it 'settings.conf'.
+* When sourcing `settings.conf`, `video-wallpaper.sh` will throw an error because it stumbles over the "\[video-wallpaper settings\]" section. This section, however, is needed by the python script. Since the shell script does not crash, this error message is tolerated for the moment until I get around to find a more elegant way than just sourcing it in `settings.conf`.
