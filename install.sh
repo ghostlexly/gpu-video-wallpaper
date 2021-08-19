@@ -3,7 +3,7 @@
 name="video-wallpaper"
 installdir="/home/$USER/.local/bin"
 xwinwrap_dl="https://github.com/mmhobi7/xwinwrap/releases/download/v0.9/xwinwrap"
-dependencies=("mpv" "pcregrep" "xrandr" "python3-pyqt5")
+dependencies=("mpv" "pcregrep" "xrandr" "python3" "python3-pyqt5")
 missingDependencies=""
 #installdir="/usr/local/share/$name"
 files=("$name.sh" "$name.py" "gui.ui" "xwinwrap")
@@ -14,19 +14,24 @@ check_dependencies() {
 		echo "$name depends on xwinwrap to run. Do you wish to download it? [y/n]"
 		read input
 		if [ "$input" == "y" ] ; then 
-			wget "$xwinwrap_dl" -O "$installdir/xwinwrap"
-			chmod +x "$installdir/xwinwrap"
+			sudo wget "$xwinwrap_dl" -O "$installdir/xwinwrap"
+			sudo chmod +x "$installdir/xwinwrap"
 		else
 			echo "Dependencies unfulfilled, aborting."
 			exit 1
 		fi
 	fi
 	
-	# Check for dependencies in repositories
+	# Check for dependencies
 	for d in ${dependencies[@]} ; do
-		present=$(which "$d")
-		if [ ${#present} -eq 0 ] ; then
-			missingDependencies+=" $d"
+		# Check through 'which'
+		which "$d" &> /dev/null
+		if [ $? -eq 1 ] ; then
+			# Check through 'dpkg'
+			dpkg -s "$d" &> /dev/null
+			if [ $? -eq 1 ] ;then
+				missingDependencies+=" $d"
+			fi
 		fi 
 	done
 	if [ "${#missingDependencies}" -gt 0 ] ; then
@@ -55,7 +60,6 @@ install() {
 		read input
 		if [ "$input" == "y" ] ; then
 			desktopFile=~/.local/share/applications/"$name".desktop
-			#sudo cp "./$name.desktop" ~/.local/share/applications
 			desktopEntry="[Desktop Entry]\nType=Application\nName=Video Wallpaper\nExec=$name.py\nIcon=wallpaper\nComment=Set video files as your desktop wallpaper.\nCategories=Utility\nTerminal=false\n"
 			sudo printf "$desktopEntry" > "$desktopFile"
 		fi
