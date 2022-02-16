@@ -16,7 +16,13 @@ CLI usage: video-wallpaper.sh [--start] [--stop] [--startup true|false] "video_p
 
 ## Installation
 
-To install, simply run `ìnstall.sh`, which will set up all dependencies, install the necessary files to your system and optionally create a start menu entry.
+```bash
+git clone https://github.com/ghostlexly/gpu-video-wallpaper.git
+cd gpu-video*
+./install.sh
+```
+These commands will download the  will set up all the required dependencies, install the necessary files to your system and optionally create an app menu entry.
+Now you can either use the CLI or open the 'Video Wallpaper' app from your application menu.
 
 ## Dependencies
 
