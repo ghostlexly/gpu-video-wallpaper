@@ -37,7 +37,7 @@ start() {
 	SCREENS=`xrandr | grep " connected\|\*" | pcregrep -o1 '([0-9]{1,}[x]{1,1}[0-9+]{1,}) \('`
 	for item in $SCREENS
 	do
-		"$scriptdir"/xwinwrap -g $item -fdt -ni -b -nf -un -o 1.0 -- mpv -wid WID --loop --no-audio "$VIDEO_PATH" & disown
+		"$scriptdir"/xwinwrap -g $item -fdt -ni -b -ov -nf -un -o 1.0 -- mpv -wid WID --loop --no-audio "$VIDEO_PATH" & disown
 	done
 	update_config $! "$VIDEO_PATH"
 }
