@@ -62,6 +62,8 @@ startup() {
 	elif [ "$2" == "false" ] ; then
 		echo "Disabling startup."
 		startup="false"
+		rm "/home/$USER/.config/autostart/$name.desktop"
+		exit 1
 	else
 		echo "Illegal startup parameter."
 		exit 1
