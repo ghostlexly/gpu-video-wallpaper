@@ -18,6 +18,8 @@ CLI usage: video-wallpaper.sh [--start] [--stop] [--startup true|false] "video_p
 
 To install, simply run `ìnstall.sh`, which will set up all dependencies, install the necessary files to your system and optionally create a start menu entry.
 
+If want to run the installer on a distribution that is not based on Debian, you may want to run the installer in distro-agnostic mode: `install.sh --distro-agnostic`. This will disable automatic dependency-checking and installing.
+
 ## Dependencies
 
 All dependencies will be installed when running `install.sh`.
