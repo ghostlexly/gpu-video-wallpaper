@@ -5,7 +5,12 @@
 # Global variables
 name="video-wallpaper"
 scriptdir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-conf="$scriptdir/settings.conf"
+confdir="/home/$USER/.config/video-wallpaper"
+conf="$confdir/settings.conf"
+if [ ! -d "confdir" ] ; then
+	mkdir "$confdir"
+	touch "$conf"	
+fi
 
 # Read config
 read_config() {
