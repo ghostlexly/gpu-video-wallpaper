@@ -14,6 +14,7 @@ class MainWindow(QtWidgets.QMainWindow):
 		super(MainWindow, self).__init__()
 		# Variables
 		self.scriptDir = os.path.dirname(os.path.realpath(__file__)) + "/"
+		self.configDir = "/home/" + getpass.getuser() + "/.config/video-wallpaper"
 		self.name = "video-wallpaper"
 		self.shellScript = self.scriptDir.replace(" ", "\ ") + self.name + ".sh"
 		self.dependencies = ["mpv", "pcregrep", "xrandr"]
@@ -24,12 +25,15 @@ class MainWindow(QtWidgets.QMainWindow):
 		self.show()
 		# Parse config
 		self.parser = configparser.RawConfigParser()
-		configFile = self.scriptDir + "/settings.conf"
+		configFile = self.configDir + "/settings.conf"
 		if os.path.isfile(configFile):
-			self.parser.read(configFile)
-			lastFile = self.parser.get(self.name + " settings", "lastfile").replace('"','')
-			if len(lastFile) > 0:
-				self.directory.setText(lastFile)
+			try:
+				self.parser.read(configFile)
+				lastFile = self.parser.get(self.name + " settings", "lastfile").replace('"','')
+				if len(lastFile) > 0:
+					self.directory.setText(lastFile)
+			except:
+				print("Configuration file could not be read: " + configFile)
 		# UI functionality
 		self.button_browse.clicked.connect(self.selectFile)
 		self.button_start.clicked.connect(self.start)
