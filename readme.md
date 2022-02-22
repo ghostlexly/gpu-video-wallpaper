@@ -24,7 +24,7 @@ cd gpu-video*
 These commands will download the repository and will set up all the required dependencies, install the necessary files to your system and optionally create an app menu entry.
 Now you can either use the CLI or open the 'Video Wallpaper' app from your application menu.
 
-If want to run the installer on a distribution that is not based on Debian, you may want to run the installer in distro-agnostic mode: `install.sh --distro-agnostic`. This will disable automatic dependency-checking and installing.
+If want to run the installer on a distribution that is not based on Debian, you may want to run the installer in distro-agnostic mode: `./install.sh --distro-agnostic`. This will disable automatic dependency-checking and installing, which will not work on non-Debian distributions that don't use `apt` as their package manager.
 
 ## Dependencies
 
@@ -42,6 +42,12 @@ All dependencies will be installed when running `install.sh`.
 Run `install.sh --uninstall` to remove all files associated with video-wallpaper.
 
 ## Changelog
+
+**2022/02/22**
+
+* Updated and corrected `readme.md` instructions.
+* `installer.sh` now has a `--distro-agnostic` flag (see "Installation" section of this readme).
+* Bugfixes to installer
 
 **2021/08/19**
 
