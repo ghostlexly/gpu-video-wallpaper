@@ -1,6 +1,6 @@
 # video-wallpaper
 
-Run a video as animated wallpaper on your Ubuntu/Debian-based Linux desktop with dual/multiple monitor support.
+Run a video as an animated live wallpaper on your Ubuntu/Debian-based Linux desktop with dual/multiple monitor support.
 
 You can either run the application through its GUI or via the command line.
 
@@ -21,7 +21,7 @@ git clone https://github.com/ghostlexly/gpu-video-wallpaper.git
 cd gpu-video*
 ./install.sh
 ```
-These commands will download the  will set up all the required dependencies, install the necessary files to your system and optionally create an app menu entry.
+These commands will download the repository and will set up all the required dependencies, install the necessary files to your system and optionally create an app menu entry.
 Now you can either use the CLI or open the 'Video Wallpaper' app from your application menu.
 
 If want to run the installer on a distribution that is not based on Debian, you may want to run the installer in distro-agnostic mode: `install.sh --distro-agnostic`. This will disable automatic dependency-checking and installing.
