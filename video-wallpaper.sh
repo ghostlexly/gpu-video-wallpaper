@@ -7,7 +7,7 @@ name="video-wallpaper"
 scriptdir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 confdir="/home/$USER/.config/video-wallpaper"
 conf="$confdir/settings.conf"
-if [ ! -d "confdir" ] ; then
+if [ ! -d "$confdir" ] ; then
 	mkdir "$confdir"
 	touch "$conf"	
 fi
