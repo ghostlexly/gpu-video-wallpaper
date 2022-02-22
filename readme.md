@@ -1,6 +1,6 @@
 # video-wallpaper
 
-Run a video as animated wallpaper on your Ubuntu/Debian-based Linux desktop with dual/multiple monitor support.
+Run a video as an animated live wallpaper on your Ubuntu/Debian-based Linux desktop with dual/multiple monitor support.
 
 You can either run the application through its GUI or via the command line.
 
@@ -21,13 +21,16 @@ git clone https://github.com/ghostlexly/gpu-video-wallpaper.git
 cd gpu-video*
 ./install.sh
 ```
-These commands will download the  will set up all the required dependencies, install the necessary files to your system and optionally create an app menu entry.
+These commands will download the repository and will set up all the required dependencies, install the necessary files to your system and optionally create an app menu entry.
 Now you can either use the CLI or open the 'Video Wallpaper' app from your application menu.
+
+If want to run the installer on a distribution that is not based on Debian, you may want to run the installer in distro-agnostic mode: `install.sh --distro-agnostic`. This will disable automatic dependency-checking and installing.
 
 ## Dependencies
 
 All dependencies will be installed when running `install.sh`.
 
+- python3
 - python3-pyqt5
 - xrandr
 - pcregrep
@@ -39,6 +42,14 @@ All dependencies will be installed when running `install.sh`.
 Run `install.sh --uninstall` to remove all files associated with video-wallpaper.
 
 ## Changelog
+
+**2021/08/19**
+
+* Bugfixes to installer and autostart functionality
+
+**2021/08/17**
+
+* Bugfixes to installer and autostart functionality
 
 **2021/06/05**
 
@@ -57,4 +68,4 @@ Run `install.sh --uninstall` to remove all files associated with video-wallpaper
 
 Known errors:
 
-* When sourcing `settings.conf`, `video-wallpaper.sh` will throw an error because it stumbles over the "\[video-wallpaper settings\]" section. This section, however, is needed by the python script. Since the shell script does not crash, this error message is tolerated for the moment until I get around to find a more elegant way than just sourcing it 'settings.conf'.
+* When sourcing `settings.conf`, `video-wallpaper.sh` will throw an error because it stumbles over the "\[video-wallpaper settings\]" section. This section, however, is needed by the python script. Since the shell script does not crash, this error message is tolerated for the moment until I get around to find a more elegant way than just sourcing `settings.conf`.

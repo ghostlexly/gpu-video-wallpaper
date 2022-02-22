@@ -22,32 +22,43 @@ check_dependencies() {
 		fi
 	fi
 	
+	# Distro-agnostic mode
+	if [ "$1" == "--distro-agnostic" ] ; then
+		echo "You're running the installer in distro-agnostic mode. The automated dependency check and install will be skipped."
+		echo "Please make sure that the following packages are present on your system: ${dependencies[@]}."
+		echo "Note that the exact package name may vary, depending on your distro."
 	# Check for dependencies in repositories
-	for d in ${dependencies[@]} ; do
-		present=$(which "$d")
-		if [ ${#present} -eq 0 ] ; then
-			missingDependencies+=" $d"
-		fi 
-	done
-	if [ "${#missingDependencies}" -gt 0 ] ; then
-		echo "Missing dependencies:$missingDependencies. Do you wish to install them? [y/n]"
-		read input
-		if [ "$input" == "y" ] ; then
-			sudo apt install $missingDependencies
-		else
-			echo "Dependencies unfulfilled, aborting."
-			exit 1
-		fi
 	else
-		echo "All dependencies are fulfilled."
+		for d in ${dependencies[@]} ; do
+			present=$(which "$d")
+			if [ ${#present} -eq 0 ] ; then
+				missingDependencies+=" $d"
+			fi 
+		done
+		if [ "${#missingDependencies}" -gt 0 ] ; then
+			echo "Missing dependencies:$missingDependencies. Do you wish to install them? [y/n]"
+			read input
+			if [ "$input" == "y" ] ; then
+				sudo apt install $missingDependencies
+				if [ $? != 0 ] ; then
+					echo "Dependencies unfulfilled, aborting."
+					exit 1
+				fi
+			else
+				echo "Dependencies unfulfilled, aborting."
+				exit 1
+			fi
+		else
+			echo "All dependencies are fulfilled."
+		fi
 	fi
 }
 
 install() {
-	sudo mkdir -p $installdir
+	mkdir -p $installdir
 	for file in ${files[@]} ; do
 		if [ "$file" != "xwinwrap" ] ; then
-			sudo cp "./$file" $installdir
+			cp "./$file" $installdir
 		fi
 	done
 	if [ ! -f "/.local/share/applications/$name.desktop" ] ; then
@@ -70,9 +81,9 @@ uninstall() {
 	rm ~/.local/share/applications/"$name".desktop # Menu entry
 }
 
-if [ "$1" == "" ] ; then
+if [ "$1" == "" ] || [ "$1" == "--distro-agnostic" ]; then
 	echo "This script will install $name to your machine." 
-	check_dependencies
+	check_dependencies "$1"
 	install
 elif [ "$1" == "--uninstall" ] ; then
 	uninstall
