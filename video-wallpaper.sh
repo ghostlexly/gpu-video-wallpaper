@@ -42,9 +42,8 @@ update_config() {
 # Start video wallpaper playback
 start() {
 	# If there is an active video wallpaper, stop it first.
-	if [ ${#pid} -gt 0 ] ; then
-		stop
-	fi
+	pkill xwinwrap
+	pkill mpv
 	VIDEO_PATH="$1"
 	SCREENS=`xrandr | grep " connected\|\*" | pcregrep -o1 '([0-9]{1,}[x]{1,1}[0-9+]{1,}) \('`
 	for item in $SCREENS
@@ -55,13 +54,9 @@ start() {
 }
 
 stop() {
-	if [ ${#pid} -gt 0 ] ; then
-		echo "Stopping $name."
-		kill "$pid"
-	else
-		echo "No active video wallpaper found."
-	fi
-	update_config "" "\"$lastfile\""
+	pkill xwinwrap
+	pkill mpv
+	update_config
 }
 
 # Start / disable playback of video file on system startup.
