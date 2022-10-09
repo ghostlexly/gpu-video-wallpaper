@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 # author: Tolga MALKOC | ghostlexly@gmail.com
 # contributor: SwallowYourDreams | https://github.com/SwallowYourDreams
+# contributor: Duracell80 | https://github.com/duracell80
 
 # Global variables
 name="video-wallpaper"
 scriptdir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+binarydir="/home/$USER/.local/bin"
 confdir="/home/$USER/.config/video-wallpaper"
 conf="$confdir/settings.conf"
 if [ ! -d "$confdir" ] ; then
@@ -49,7 +51,7 @@ start() {
 	SCREENS=`xrandr | grep " connected\|\*" | pcregrep -o1 '([0-9]{1,}[x]{1,1}[0-9+]{1,}) \('`
 	for item in $SCREENS
 	do
-		"$scriptdir"/xwinwrap -g $item -fdt -ni -b -nf -un -o 1.0 -- mpv -wid WID --loop --no-audio "$VIDEO_PATH" & disown
+		"$binarydir"/xwinwrap -g $item -fdt -ni -b -nf -un -o 1.0 -- mpv -wid WID --loop --no-audio --input-ipc-server=/tmp/gpu-video-wallpaper.socket "$VIDEO_PATH" & disown
 	done
 	update_config $! "\"$VIDEO_PATH\""
 }
@@ -62,6 +64,14 @@ stop() {
 		echo "No active video wallpaper found."
 	fi
 	update_config "" "\"$lastfile\""
+}
+
+pause() {
+    echo '{ "command": ["set_property", "pause", true] }' | socat - /tmp/gpu-video-wallpaper.socket
+}
+
+play() {
+    echo '{ "command": ["set_property", "pause", false] }' | socat - /tmp/gpu-video-wallpaper.socket
 }
 
 # Start / disable playback of video file on system startup.
@@ -95,11 +105,15 @@ file_exists() {
 
 # get arguments
 print_help() {
-    echo "Usage: ./$name.sh [--start] [--stop] [--startup true|false] \"video_path.mp4\""
+    echo "Usage: ./$name.sh [--start] [--stop] [--play] [--pause] [--startup true|false] \"video_path.mp4\""
     echo ""
     echo "--start Start playback of video file."
     echo ""
     echo "--stop Stop active playback."
+    echo ""
+    echo "--pause Pause active playback."
+    echo ""
+    echo "--play Resume active playback."
     echo ""
     echo "--startup Start/disable playback of video file on system startup."
     echo ""
@@ -135,6 +149,16 @@ while true
             --stop*)
 				stop
 				exit 2
+            ;;
+            
+            --pause*)
+				pause
+				exit 0
+            ;;
+            
+            --play*)
+				play
+				exit 0
             ;;
 
             --*)

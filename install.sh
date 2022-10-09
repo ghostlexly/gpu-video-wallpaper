@@ -3,7 +3,7 @@
 name="video-wallpaper"
 installdir="/home/$USER/.local/bin"
 xwinwrap_dl="https://github.com/mmhobi7/xwinwrap/releases/download/v0.9/xwinwrap"
-dependencies=("mpv" "pcregrep" "xrandr" "python3-pyqt5")
+dependencies=("mpv" "pcregrep" "xrandr" "python3-pyqt5" "socat")
 missingDependencies=""
 #installdir="/usr/local/share/$name"
 files=("$name.sh" "$name.py" "gui.ui" "xwinwrap")
@@ -71,6 +71,8 @@ install() {
 			sudo printf "$desktopEntry" > "$desktopFile"
 		fi
 	fi
+    echo ""
+    echo "For best results try logging out of your current desktop and/or terminal session and log back in."
 }
 
 uninstall() {
