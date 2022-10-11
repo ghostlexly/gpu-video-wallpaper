@@ -11,6 +11,10 @@ CLI usage: video-wallpaper.sh [--start] [--stop] [--startup true|false] "video_p
 
 --stop  Stop active playback.
 
+--pause  Pause active playback.
+
+--play  Resume active playback.
+
 --startup  Start/disable playback of video file on system startup."
 ````
 
@@ -35,6 +39,7 @@ All dependencies will be installed when running `install.sh`.
 - xrandr
 - pcregrep
 - mpv
+- socat (to communicate with mpv after playing starts)
 - xwinwrap
 
 ## Uninstall
@@ -42,6 +47,13 @@ All dependencies will be installed when running `install.sh`.
 Run `install.sh --uninstall` to remove all files associated with video-wallpaper.
 
 ## Changelog
+
+**2022/10/09**
+
+* Updated `readme.md` instructions.
+* `video-wallpaper.sh` now uses a socket to control mpv from external scripts. Now has pause and play capability using that socket so that video can be paused when desktop is not in focus and resumed perhaps on a shortcut such as Super+M to "show desktop".
+* `video-wallpaper.py` and `video-wallpaper.sh` now uses the users $HOME/.local/bin directory for xwinwrap
+* `video-wallpaper.py` now has pause and play buttons.
 
 **2022/02/22**
 
