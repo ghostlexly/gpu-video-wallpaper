@@ -58,7 +58,8 @@ install() {
 	mkdir -p $installdir
 	for file in ${files[@]} ; do
 		if [ "$file" != "xwinwrap" ] ; then
-			cp "./$file" $installdir
+			# FORCE RE-INSTALL
+            cp -f "./$file" $installdir
 		fi
 	done
 	if [ ! -f "/.local/share/applications/$name.desktop" ] ; then

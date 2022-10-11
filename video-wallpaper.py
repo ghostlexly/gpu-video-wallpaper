@@ -86,9 +86,10 @@ class MainWindow(QtWidgets.QMainWindow):
             else:
                 self.statusbar.showMessage("Playback is running.")
 
-    # Stops video wallpaper playback
+    # Stops video wallpaper playback (needs file path so it knows what to grep during the kill loop in video-wallpaper.sh)
     def stop(self):
-        os.system(self.shellScript + " --stop")
+        exitcode = os.system(
+                self.shellScript + ' --stop "' + self.directory.text() + '"')
         self.statusbar.showMessage("Playback stopped.")
     # Pause video wallpaper playback
 
