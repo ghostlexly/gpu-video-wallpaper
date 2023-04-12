@@ -29,7 +29,7 @@ class MainWindow(QtWidgets.QMainWindow):
 		if os.path.isfile(configFile):
 			try:
 				self.parser.read(configFile)
-				lastFile = self.parser.get(self.name + " settings", "lastfile").replace('"','')
+				lastFile = self.parser.get(self.name + " settings", "LASTFILE").replace('"','')
 				if len(lastFile) > 0:
 					self.directory.setText(lastFile)
 			except:
@@ -68,7 +68,7 @@ class MainWindow(QtWidgets.QMainWindow):
 	# Starts video wallpaper playback
 	def start(self):
 		if(self.fileSelected()):
-			exitcode = os.system(self.shellScript + ' --start "' + self.directory.text() + '"')
+			exitcode = os.system(self.shellScript + ' --start --video-file "' + self.directory.text() + '"')
 			if exitcode > 0:
 				self.statusbar.showMessage("Error: could not start playback.")
 			else:
@@ -86,7 +86,7 @@ class MainWindow(QtWidgets.QMainWindow):
 				self.statusbar.showMessage("Wallpaper autostart enabled.") 
 			elif displayMessage:
 				self.statusbar.showMessage("Wallpaper autostart disabled.")
-			os.system(self.shellScript + " --startup " + str(enable).lower() + " '" + self.directory.text() + "'")
+			os.system(self.shellScript + " --startup " + str(enable).lower() + " --video-file '" + self.directory.text() + "'")
 	
 	# Returns whether autostart is enabled
 	def autostartEnabled(self):
