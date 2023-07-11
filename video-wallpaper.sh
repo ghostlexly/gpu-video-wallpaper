@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# author: Tolga MALKOC | ghostlexly@gmail.com
+# author: ghostlexly@gmail.com
 # contributor: SwallowYourDreams | https://github.com/SwallowYourDreams
 
 # Global variables
 name="video-wallpaper"
 scriptdir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-confdir="/home/$USER/.config/video-wallpaper"
+confdir="$HOME/.config/video-wallpaper"
 conf="$confdir/settings.conf"
 if [ ! -d "$confdir" ] ; then
 	mkdir "$confdir"
@@ -81,7 +81,7 @@ startup() {
 		exit 1
 	fi
 	LAUNCH_SCRIPT="bash -c '\"$scriptdir/$name.sh\" --start \"$videofile\"'"
-	printf "[Desktop Entry]\nType=Application\nExec=$LAUNCH_SCRIPT\nHidden=false\nNoDisplay=false\nX-GNOME-Autostart-enabled=$startup\nName=$name" > "/home/$USER/.config/autostart/$name.desktop"
+	printf "[Desktop Entry]\nType=Application\nExec=$LAUNCH_SCRIPT\nHidden=false\nNoDisplay=false\nX-GNOME-Autostart-enabled=$startup\nName=$name" > "$HOME/.config/autostart/$name.desktop"
 }
 
 # Checks if a (video) file exists. Displays and error and stops the script if it doesn't
